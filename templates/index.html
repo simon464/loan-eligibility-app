@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Loan Eligibility Checker</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">&#127968;</span>
+        <span class="logo-text">LoanCheck <span class="logo-accent">AI</span></span>
+      </div>
+      <p class="header-tagline">Instant loan eligibility assessment powered by machine learning</p>
+    </div>
+  </header>
+
+  <!-- ===== MAIN ===== -->
+  <main class="main-container">
+
+    <!-- Progress Bar -->
+    <div class="progress-wrapper" id="progressWrapper">
+      <div class="progress-steps">
+        <div class="step active" id="step-indicator-1">
+          <div class="step-dot">1</div>
+          <span class="step-label">Personal</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step" id="step-indicator-2">
+          <div class="step-dot">2</div>
+          <span class="step-label">Employment</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step" id="step-indicator-3">
+          <div class="step-dot">3</div>
+          <span class="step-label">Financial</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step" id="step-indicator-4">
+          <div class="step-dot">4</div>
+          <span class="step-label">Loan</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form Card -->
+    <div class="card form-card" id="formCard">
+      <form id="loanForm" novalidate>
+
+        <!-- ===== SECTION 1: PERSONAL INFO ===== -->
+        <section class="form-section active" id="section-1">
+          <h2 class="section-title">Personal Information</h2>
+          <p class="section-sub">Tell us a bit about yourself</p>
+
+          <div class="field-grid">
+            <div class="field-group">
+              <label for="gender">Gender</label>
+              <select id="gender" name="gender" required>
+                <option value="">Select gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label for="married">Marital Status</label>
+              <select id="married" name="married" required>
+                <option value="">Select status</option>
+                <option value="yes">Married</option>
+                <option value="no">Single / Unmarried</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label for="dependents">Number of Dependents</label>
+              <select id="dependents" name="dependents" required>
+                <option value="">Select</option>
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3 or more</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label for="education">Education Level</label>
+              <select id="education" name="education" required>
+                <option value="">Select level</option>
+                <option value="graduate">Graduate</option>
+                <option value="not graduate">Not Graduate</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <div></div>
+            <button type="button" class="btn btn-primary" onclick="goToSection(2)">Next &rarr;</button>
+          </div>
+        </section>
+
+        <!-- ===== SECTION 2: EMPLOYMENT INFO ===== -->
+        <section class="form-section" id="section-2">
+          <h2 class="section-title">Employment Information</h2>
+          <p class="section-sub">Help us understand your work situation</p>
+
+          <div class="field-grid">
+            <div class="field-group">
+              <label for="self_employed">Employment Type</label>
+              <select id="self_employed" name="self_employed" required>
+                <option value="">Select type</option>
+                <option value="no">Salaried / Employed</option>
+                <option value="yes">Self-Employed / Business</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label for="years_employed">Years Employed / In Business</label>
+              <input type="number" id="years_employed" name="years_employed"
+                     min="0" max="50" placeholder="e.g. 5" required />
+            </div>
+
+            <div class="field-group">
+              <label for="property_area">Property Area</label>
+              <select id="property_area" name="property_area" required>
+                <option value="">Select area</option>
+                <option value="urban">Urban</option>
+                <option value="semiurban">Semi-Urban</option>
+                <option value="rural">Rural</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <button type="button" class="btn btn-outline" onclick="goToSection(1)">&larr; Back</button>
+            <button type="button" class="btn btn-primary" onclick="goToSection(3)">Next &rarr;</button>
+          </div>
+        </section>
+
+        <!-- ===== SECTION 3: FINANCIAL INFO ===== -->
+        <section class="form-section" id="section-3">
+          <h2 class="section-title">Financial Information</h2>
+          <p class="section-sub">Your income and financial health</p>
+
+          <div class="field-grid">
+            <div class="field-group">
+              <label for="applicant_income">Annual Income ($)</label>
+              <input type="number" id="applicant_income" name="applicant_income"
+                     min="0" placeholder="e.g. 60000" required />
+            </div>
+
+            <div class="field-group">
+              <label for="coapplicant_income">Co-applicant Annual Income ($) <span class="optional">(optional)</span></label>
+              <input type="number" id="coapplicant_income" name="coapplicant_income"
+                     min="0" placeholder="e.g. 20000" value="0" />
+            </div>
+
+            <div class="field-group">
+              <label for="existing_debts">Existing Monthly Debts ($)</label>
+              <input type="number" id="existing_debts" name="existing_debts"
+                     min="0" placeholder="e.g. 500" required />
+            </div>
+
+            <div class="field-group">
+              <label for="credit_history">Credit History</label>
+              <select id="credit_history" name="credit_history" required>
+                <option value="">Select</option>
+                <option value="1">Good (no defaults)</option>
+                <option value="0">Poor (has defaults)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <button type="button" class="btn btn-outline" onclick="goToSection(2)">&larr; Back</button>
+            <button type="button" class="btn btn-primary" onclick="goToSection(4)">Next &rarr;</button>
+          </div>
+        </section>
+
+        <!-- ===== SECTION 4: LOAN DETAILS ===== -->
+        <section class="form-section" id="section-4">
+          <h2 class="section-title">Loan Details</h2>
+          <p class="section-sub">Tell us about the loan you need</p>
+
+          <div class="field-grid">
+            <div class="field-group">
+              <label for="loan_amount">Loan Amount ($)</label>
+              <input type="number" id="loan_amount" name="loan_amount"
+                     min="1000" placeholder="e.g. 150000" required />
+            </div>
+
+            <div class="field-group">
+              <label for="loan_term">Loan Term</label>
+              <select id="loan_term" name="loan_term" required>
+                <option value="">Select term</option>
+                <option value="12">12 months (1 year)</option>
+                <option value="36">36 months (3 years)</option>
+                <option value="60">60 months (5 years)</option>
+                <option value="84">84 months (7 years)</option>
+                <option value="120">120 months (10 years)</option>
+                <option value="180">180 months (15 years)</option>
+                <option value="240">240 months (20 years)</option>
+                <option value="300">300 months (25 years)</option>
+                <option value="360">360 months (30 years)</option>
+              </select>
+            </div>
+
+            <div class="field-group field-group--full">
+              <label for="loan_purpose">Loan Purpose</label>
+              <select id="loan_purpose" name="loan_purpose">
+                <option value="">Select purpose</option>
+                <option value="home">Home Purchase / Mortgage</option>
+                <option value="auto">Auto / Vehicle</option>
+                <option value="education">Education</option>
+                <option value="business">Business</option>
+                <option value="personal">Personal / Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <button type="button" class="btn btn-outline" onclick="goToSection(3)">&larr; Back</button>
+            <button type="submit" class="btn btn-success" id="submitBtn">
+              <span class="btn-text">Check Eligibility</span>
+              <span class="btn-spinner hidden" id="spinner">&#9696;</span>
+            </button>
+          </div>
+        </section>
+
+      </form>
+    </div>
+
+    <!-- ===== RESULT CARD ===== -->
+    <div class="card result-card hidden" id="resultCard">
+      <div class="result-icon" id="resultIcon"></div>
+      <h2 class="result-title" id="resultTitle"></h2>
+      <p class="result-subtitle" id="resultSubtitle"></p>
+
+      <div class="confidence-wrapper">
+        <div class="confidence-label">
+          <span>Model Confidence</span>
+          <span id="confidenceText"></span>
+        </div>
+        <div class="confidence-bar-track">
+          <div class="confidence-bar-fill" id="confidenceBarFill"></div>
+        </div>
+      </div>
+
+      <div class="reasons-box">
+        <h3 class="reasons-title">Key Factors</h3>
+        <ul class="reasons-list" id="reasonsList"></ul>
+      </div>
+
+      <button class="btn btn-outline" id="tryAgainBtn" onclick="resetForm()">
+        &#8635; Check Another Application
+      </button>
+    </div>
+
+    <!-- Error Banner -->
+    <div class="error-banner hidden" id="errorBanner">
+      <span id="errorText"></span>
+    </div>
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="site-footer">
+    <p>LoanCheck AI &mdash; For educational purposes only. Not financial advice.</p>
+  </footer>
+
+  <script>
+    let currentSection = 1;
+    const TOTAL_SECTIONS = 4;
+
+    function goToSection(n) {
+      // Basic validation before advancing
+      if (n > currentSection) {
+        const section = document.getElementById(`section-${currentSection}`);
+        const required = section.querySelectorAll('[required]');
+        let valid = true;
+        required.forEach(el => {
+          el.classList.remove('invalid');
+          if (!el.value.trim()) {
+            el.classList.add('invalid');
+            valid = false;
+          }
+        });
+        if (!valid) {
+          section.querySelector('.invalid').focus();
+          return;
+        }
+      }
+
+      document.getElementById(`section-${currentSection}`).classList.remove('active');
+      document.getElementById(`step-indicator-${currentSection}`).classList.remove('active');
+      document.getElementById(`step-indicator-${currentSection}`).classList.add('done');
+
+      currentSection = n;
+      document.getElementById(`section-${currentSection}`).classList.add('active');
+      document.getElementById(`step-indicator-${currentSection}`).classList.add('active');
+      document.getElementById(`step-indicator-${currentSection}`).classList.remove('done');
+    }
+
+    document.getElementById('loanForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      const spinner = document.getElementById('spinner');
+      const btnText = btn.querySelector('.btn-text');
+
+      btn.disabled = true;
+      spinner.classList.remove('hidden');
+      btnText.textContent = 'Analysing...';
+
+      const fd = new FormData(this);
+      const payload = {};
+      fd.forEach((v, k) => { payload[k] = v; });
+
+      try {
+        const res = await fetch('/predict', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json();
+
+        if (data.error) throw new Error(data.error);
+
+        showResult(data);
+      } catch (err) {
+        showError(err.message);
+      } finally {
+        btn.disabled = false;
+        spinner.classList.add('hidden');
+        btnText.textContent = 'Check Eligibility';
+      }
+    });
+
+    function showResult(data) {
+      const resultCard = document.getElementById('resultCard');
+      const formCard   = document.getElementById('formCard');
+      const progressWrapper = document.getElementById('progressWrapper');
+
+      formCard.classList.add('hidden');
+      progressWrapper.classList.add('hidden');
+      resultCard.classList.remove('hidden');
+
+      const icon  = document.getElementById('resultIcon');
+      const title = document.getElementById('resultTitle');
+      const sub   = document.getElementById('resultSubtitle');
+
+      if (data.eligible) {
+        resultCard.classList.remove('result--rejected');
+        resultCard.classList.add('result--approved');
+        icon.textContent  = '✓';
+        title.textContent = 'Congratulations! You are Eligible';
+        sub.textContent   = 'Based on the information provided, you qualify for the loan.';
+      } else {
+        resultCard.classList.remove('result--approved');
+        resultCard.classList.add('result--rejected');
+        icon.textContent  = '✗';
+        title.textContent = 'Not Eligible at This Time';
+        sub.textContent   = 'Based on the information provided, the loan cannot be approved.';
+      }
+
+      document.getElementById('confidenceText').textContent = `${data.confidence}%`;
+      const fill = document.getElementById('confidenceBarFill');
+      fill.style.width = '0%';
+      setTimeout(() => { fill.style.width = `${data.confidence}%`; }, 100);
+
+      const list = document.getElementById('reasonsList');
+      list.innerHTML = '';
+      data.reasons.forEach(r => {
+        const li = document.createElement('li');
+        li.textContent = r;
+        list.appendChild(li);
+      });
+
+      resultCard.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function showError(msg) {
+      const banner = document.getElementById('errorBanner');
+      document.getElementById('errorText').textContent = `Error: ${msg}`;
+      banner.classList.remove('hidden');
+      setTimeout(() => banner.classList.add('hidden'), 6000);
+    }
+
+    function resetForm() {
+      document.getElementById('resultCard').classList.add('hidden');
+      document.getElementById('resultCard').classList.remove('result--approved', 'result--rejected');
+      document.getElementById('formCard').classList.remove('hidden');
+      document.getElementById('progressWrapper').classList.remove('hidden');
+      document.getElementById('loanForm').reset();
+
+      // Reset steps
+      for (let i = 1; i <= TOTAL_SECTIONS; i++) {
+        document.getElementById(`step-indicator-${i}`).classList.remove('active', 'done');
+        document.getElementById(`section-${i}`).classList.remove('active');
+      }
+      currentSection = 1;
+      document.getElementById('step-indicator-1').classList.add('active');
+      document.getElementById('section-1').classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>
