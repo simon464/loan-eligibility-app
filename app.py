@@ -7,11 +7,21 @@ from flask import Flask, request, jsonify, render_template
 import joblib
 import numpy as np
 import os
+import subprocess
+import sys
 
 app = Flask(__name__)
 
 # Load the trained model artifact once at startup
-MODEL_PATH = os.path.join(os.path.dirname(__file__), 'loan_model.pkl')
+MODEL_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'loan_model.pkl')
+
+# Auto-train if model file doesn't exist (e.g. first Render deploy)
+if not os.path.exists(MODEL_PATH):
+    print("Model not found — training now...")
+    train_script = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'train_model.py')
+    subprocess.run([sys.executable, train_script], check=True)
+    print("Training complete.")
+
 artifact = joblib.load(MODEL_PATH)
 model = artifact['model']
 FEATURE_COLS = artifact['feature_cols']
